@@ -29,7 +29,13 @@ class TipoUsuario extends EntidadeAbstrata {
         $this->descricao = $descricao;
     }
 
-
+    public function asJSON($extraAttrs = array()) {
+        $arr = [
+            'id' => $this->id,
+            'descricao' => $this->descricao
+        ];
+        return json_encode($arr);
+    }
 
 
 }

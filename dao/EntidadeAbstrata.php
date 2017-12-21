@@ -540,9 +540,14 @@ abstract class EntidadeAbstrata {
         }
         return 'get' . strtoupper($pname[0]) . substr($pname,1);
     }
+
     private static function getIdColumn( $pname ) {
         $clazz = get_called_class();
         return isset($clazz::$idName) ? $clazz::$idName : 'id';
+    }
+
+    private function execQuery( $sql ) {
+        //TODO: query com atributos (ao inves de colunas)
     }
 
 }

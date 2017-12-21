@@ -26,23 +26,32 @@ if ( isset($_POST) == !empty($_POST) ) {
     $usuario = Usuario::auth($_POST['usuario'] , $_POST['senha'] );
     if ($usuario != null ) {
         $usuario->saveToSession();
-        header("Location: ./consultar.php");
+        header("Location: ./main.php");
     } else {
         echo "Usuario não encontrado";
     }
 }
 
 ?>
-    <form class="form-signin" method="POST" action="">
-        <h2 class="form-signin-heading text-center">Ponto Bolsistas<br /><br /></h2>
-        <label for="usuario" class="sr-only">Usuário</label>
-
-        <input type="text" name="usuario" class="form-control" placeholder="Digite seu usuário" autofocus><br />
-
-        <label for="senha" class="sr-only">Senha</label>
-        <input type="password" name="senha" class="form-control" placeholder="Digite sua senha"  >
-
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Acessar</button><br /><br /><br />
+    <form method="POST" action="">
+        <h2 >Controle</h2>
+        <div class="row">
+            <div class="col-xs-12 form-group">
+                <label for="usuario">Usuário</label>
+                <input type="text" name="usuario" class="form-control" placeholder="Digite seu usuário" autofocus><br />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 form-group">
+                <label for="senha">Senha</label>
+                <input type="password" name="senha" class="form-control" placeholder="Digite sua senha"  >
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 form-group">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Acessar</button>
+            </div>
+        </div>
     </form>
 
 </div>

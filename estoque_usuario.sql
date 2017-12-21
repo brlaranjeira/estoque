@@ -1,0 +1,1 @@
+INSERT INTO estoque.usuario (id, login, prenome, sobrenome, iteracoes, passwd, salt, id_tipo) VALUES (2, 'bruno', 'Bruno', 'Rezende Laranjeira', 50000, '618c2a630e3a76a58f1a68790f6eed80dc900c8c346c994c85b525fc6e84187b', '?H¿eP+Öÿ''BUÌEàm4?#fõÂ0!ü=ú\\Äîll', 1);

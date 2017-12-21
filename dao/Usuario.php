@@ -15,7 +15,12 @@ class Usuario extends EntidadeAbstrata {
     private $iteracoes;
     private $passwd;
     private $salt;
+    /**
+     * @var TipoUsuario
+     */
     private $tipo;
+
+    const USER_SESSION = 'spoiler_md_user';
 
     protected static $tbName = 'usuario';
     protected static $dicionario = [
@@ -72,13 +77,20 @@ class Usuario extends EntidadeAbstrata {
         }
         $calculado = self::calculaPW($passwd,$res['salt'],$res['iteracoes']);
         if ($res['passwd'] == $calculado) {
-            $usr = new Usuario($login,$res['prenome'],$res['sobrenome'],$res['passwd'],$res['tipo'],false,$res['id']);
+            $usr = new Usuario();
+            //$res['sobrenome'],$res['passwd'],$res['id_tipo'],false,$res['id']
+            $usr->setLogin($login);
+            $usr->setId($res['id']);
+            $usr->setPrenome($res['prenome']);
+            $usr->setSobrenome($res['sobrenome']);
+            $usr->setTipo(TipoUsuario::getById($res['id_tipo']));
             $usr->salt = $res['salt'];
             $usr->iteracoes = $res['iteracoes'];
             if ($usr->iteracoes != ConfigClass::pw_iter) {
                 $usr->geraPW($passwd);
                 $usr->save();
             }
+            unset($usr->salt);
             return $usr;
         }
         return false;
@@ -182,8 +194,50 @@ class Usuario extends EntidadeAbstrata {
         $this->tipo = $tipo;
     }
 
+    public function saveToSession() {
+        (session_status() != PHP_SESSION_ACTIVE) and session_start();
+        $json = $this->asJSON();
+        $_SESSION[Usuario::USER_SESSION] = base64_encode($json);
+    }
 
+    public static function destroySession() {
+        session_start();
+        session_destroy();
+        session_commit();
+    }
 
+    public static function restoreFromSession() {
+        (session_status() != PHP_SESSION_ACTIVE) and session_start();
+        if (isset($_SESSION[Usuario::USER_SESSION]) ) {
+            $decoded = json_decode(base64_decode($_SESSION[Usuario::USER_SESSION]));
+            $usr = new Usuario();
+            $usr->setId($decoded->id);
+            $usr->setLogin($decoded->login);
+            $usr->setPrenome($decoded->prenome);
+            $usr->setSobrenome($decoded->sobrenome);
+            $tipoArr = json_decode($decoded->tipo);
+            require_once (__DIR__ . '/TipoUsuario.php');
+            $tp = new TipoUsuario();
+            $tp->setId($tipoArr->id);
+            $tp->setDescricao($tipoArr->descricao);
+            $usr->setTipo($tp);
+//            $usr->setLogin()
+            return $usr;
+        }
+        return null;
+    }
+
+    public function asJSON($extraAttrs = array()) {
+        $arr = [
+            'id' => $this->id,
+            'login' => $this->login,
+            'prenome' => $this->prenome,
+            'sobrenome' => $this->sobrenome,
+            'tipo' => $this->tipo->asJSON()
+        ];
+        $a = json_encode($arr);
+        return $a;
+    }
 
 
 }
