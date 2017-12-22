@@ -336,7 +336,8 @@ abstract class EntidadeAbstrata {
         
         $len = min(sizeof($attrs),sizeof($values));
         for ( $i = 0; $i < $len; $i ++ ) {
-	        $colName = ($attrs[$i] != 'id') ? ($clazz::$dicionario[$attrs[$i]]) : ( (isset($clazz::$idName)) ? $clazz::$idName : 'id');
+//	        $colName = ($attrs[$i] != 'id') ? ($clazz::$dicionario[$attrs[$i]]) : ( (isset($clazz::$idName)) ? $clazz::$idName : 'id');
+            $colName = self::attrToCol($attrs[$i]);
 	        $op = isset($operators[$i]) ? $operators[$i] : '=';
 	        $op = (isset($operators) && isset($operators[$i])) ? $operators[$i] : '=';
 	        $sql .= $i != 0 ? ' AND ' : ' WHERE ';
@@ -366,6 +367,21 @@ abstract class EntidadeAbstrata {
             $objects[] = self::rowToObject( $row, $clazz );
         }
         return sizeof($objects) > 0 ? $objects : array ();
+    }
+
+    private static function attrToCol($attr) {
+        $clazz = get_called_class();
+        if ($attr == 'id') {
+            return isset($clazz::$idName) ? $clazz::$idName : 'id';
+        } else {
+            if (isset($clazz::$dicionario[$attr])) {
+                return $clazz::$dicionario[$attr];
+            } elseif (isset($clazz::$hasOne[$attr])) {
+                return $clazz::$hasOne[$attr]['tbForeignKey'];
+            } else {
+                return $attr;
+            }
+        }
     }
 
     private static function rowToObject( $row, $clazz ) {

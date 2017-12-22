@@ -15,8 +15,15 @@ class Container extends EntidadeAbstrata {
 
     protected static $dicionario = [
         'referencia' => 'referencia',
-        'dthrCriacao' => 'dthr_criacao',
-        'usuarioCriacao' => 'usuario_criacao'
+        'dthrCriacao' => 'dthr_criacao'
+//        'usuarioCriacao' => 'usuario_criacao'
+    ];
+
+    protected static $hasOne = [
+        'usuarioCriacao' => [
+            'clEntityName' => 'Usuario',
+            'tbForeignKey' => 'usuario_criacao'
+        ]
     ];
 
     protected static $tbName = 'container';

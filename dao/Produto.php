@@ -13,6 +13,7 @@ class Produto extends EntidadeAbstrata {
     private $referencia;
     private $descricao;
     private $observacao;
+    private $variacao;
     private $usuarioCriacao;
     private $dthrCriacao;
 
@@ -22,7 +23,8 @@ class Produto extends EntidadeAbstrata {
         'referencia' => 'referencia',
         'descricao' => 'descricao',
         'dthrCriacao' => 'dthr_criacao',
-        'observacao' => 'observacao'
+        'observacao' => 'observacao',
+        'variacao' => 'variacao'
     ];
     protected static $hasOne = [
         'container' => [
@@ -42,6 +44,7 @@ class Produto extends EntidadeAbstrata {
             'referencia' => $this->referencia,
             'descricao' => $this->descricao,
             'observacao' => $this->observacao,
+            'variacao' => $this->variacao,
             'dthrCriacao' => $this->dthrCriacao,
             'usuarioCriacao' => $this->usuarioCriacao->asJSON(),
             'container' => $this->container->asJSON()
@@ -111,6 +114,14 @@ class Produto extends EntidadeAbstrata {
     public function setObservacao($observacao)
     {
         $this->observacao = $observacao;
+    }
+
+    public function getVariacao() {
+        return $this->variacao;
+    }
+
+    public function setVariacao( $variacao ) {
+        $this->variacao = $variacao;
     }
 
     /**

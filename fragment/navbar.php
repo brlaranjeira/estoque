@@ -13,8 +13,8 @@
     </div>
     <ul class="nav navbar-nav">
       <li><a href="./cadastraprod.php">Cadastro de estoque</a></li>
-      <li><a href="./buscaprod">Busca de produto</a></li>
-      <li><a href="./cxcontrole">Caixa</a></li>
+      <li><a href="./buscaprod.php">Busca de produto</a></li>
+      <li><a href="./cxcontrole.php">Caixa</a></li>
     </ul>
   </div>
 </nav>
