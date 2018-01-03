@@ -8,9 +8,12 @@
 require_once (__DIR__ . '/../dao/Produto.php');
 
 $prods = Produto::getAll();
-$arr = array();
+$ret = '{ "produtos": [';
+$prim = true;
 foreach ($prods as $prod) {
-    $arr[] = $prod->asJSON();
+    $ret .= $prim ? '' : ',';
+    $prim = false;
+    $ret .= $prod->asJSON();
 }
-$str = json_encode($arr);
-echo $str;
+$ret .= ']}';
+echo $ret;

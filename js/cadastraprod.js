@@ -10,6 +10,7 @@ $('#div-cadastraprod').on('click','#span-novocontainer',function () {
            $opt.attr('selected','');
            $opt.text(response.referencia);
            $select.append($opt);
+           alert('Caixa/sacola nova:\nReferência'+response.referencia);
        }, error: function ( response ) {
            debugger;
        }
@@ -18,14 +19,16 @@ $('#div-cadastraprod').on('click','#span-novocontainer',function () {
 
 $('#form-novoprod').submit(function () {
     var url = $(this).attr('action');
-    $.ajax(url, {
+    $.ajax( url , {
         method: 'post',
         data: {
             proddesc: document.getElementById('novoprod-desc').value,
             prodobs: document.getElementById('novoprod-obs').value,
             prodvar: document.getElementById('novoprod-var').value,
             containerid: document.getElementById('select-container').value
-        }, success: function () {
+        }, success: function ( response ) {
+            response = JSON.parse( response );
+            alert('Produto novo:\nReferência: ' + response.referencia);
             carregaProdutos();
         }
     });

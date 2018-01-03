@@ -36,21 +36,21 @@ class Produto extends EntidadeAbstrata {
         ]
     ];
 
-    public function asJSON($extraAttrs = array()) {
-        require_once(__DIR__ . '/Usuario.php');
-        require_once(__DIR__ . '/Container.php');
-        $arr = [
-            'id' => $this->id,
-            'referencia' => $this->referencia,
-            'descricao' => $this->descricao,
-            'observacao' => $this->observacao,
-            'variacao' => $this->variacao,
-            'dthrCriacao' => $this->dthrCriacao,
-            'usuarioCriacao' => $this->usuarioCriacao->asJSON(),
-            'container' => $this->container->asJSON()
-        ];
-        return json_encode($arr);
-    }
+//    public function asJSON($extraAttrs = array()) {
+//        require_once(__DIR__ . '/Usuario.php');
+//        require_once(__DIR__ . '/Container.php');
+//        $arr = [
+//            'id' => $this->id,
+//            'referencia' => $this->referencia,
+//            'descricao' => $this->descricao,
+//            'observacao' => $this->observacao,
+//            'variacao' => $this->variacao,
+//            'dthrCriacao' => $this->dthrCriacao,
+//            'usuarioCriacao' => $this->usuarioCriacao->asJSON(),
+//            'container' => $this->container->asJSON()
+//        ];
+//        return json_encode($arr);
+//    }
 
     /**
      * @return mixed
@@ -65,7 +65,7 @@ class Produto extends EntidadeAbstrata {
      */
     public function setContainer($container) {
         require_once(__DIR__ . '/Container.php');
-        $this->container = is_object($container) ? $container : Container::getById($container);
+        $this->container = is_object($container) ? $container : isset($container) ? Container::getById($container) : null;
     }
 
     /**

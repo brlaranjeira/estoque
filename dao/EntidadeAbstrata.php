@@ -423,7 +423,6 @@ abstract class EntidadeAbstrata {
                     $current->$setter($linha[$kk]);
                 }
                 $objArray[] = $current;
-                echo 'a';
             }
             $setter = self::getSetter( $k );
             $object->$setter($objArray);
@@ -437,7 +436,6 @@ abstract class EntidadeAbstrata {
             $objArray = $cls::getByAttr($v['clCurrentId'],$id);
             $setter = self::getSetter( $k );
             $object->$setter($objArray);
-            echo '';
         }
 
         /**
@@ -446,7 +444,8 @@ abstract class EntidadeAbstrata {
         foreach ( $clazz::$hasOne as $k => $v ) {
             $cls = $v['clEntityName'];
             require_once (__DIR__ . '/' . $cls . '.php');
-            $obj = $cls::getById($row[$v['tbForeignKey']]);
+            $id = $row[$v['tbForeignKey']];
+            $obj = isset($id)? $cls::getById($id) : null;
             $setter = self::getSetter($k);
             $object->$setter($obj);
         }
@@ -472,7 +471,7 @@ abstract class EntidadeAbstrata {
             if (is_object($attr)) {
                 $json .= $attr->asJSON();
             } else {
-                $json .= '"' . $attr . '"';
+                $json .= isset($json) ? '"' . $attr . '"' : 'null';
             }
         }
 
@@ -485,7 +484,7 @@ abstract class EntidadeAbstrata {
             $objects = $this->$getter();
             for ( $i = 0; $i < sizeof($objects); $i++ ) {
                 $json .= $i == 0 ? '' : ' , ';
-                $json .= $objects[$i]->asJSON(array_values($v['tbRelDicionario']));
+                $json .= isset($objects[$i]) ? $objects[$i]->asJSON(array_values($v['tbRelDicionario'])) : 'null';
             }
             $json .= ']';
         }
@@ -500,7 +499,7 @@ abstract class EntidadeAbstrata {
             if ( is_object($attrValue) ) {
                 $json .= $attrValue->asJSON();
             } else {
-                $json .= '"' . $attrValue . '"';
+                $json .= isset($attrValue) ? '"' . $attrValue . '"' : 'null';
             }
         }
 
@@ -513,7 +512,7 @@ abstract class EntidadeAbstrata {
             $json .= ', "' . $attrName . '": [';
                 for ( $i = 0; $i < sizeof($objects); $i++ ) {
                     $json .= $i == 0 ? '' : ' , ';
-                    $json .= $objects[$i]->asJSON();
+                    $json .= isset($objects[$i])? $objects[$i]->asJSON() : 'null';
                 }
             $json .= ']';
         }
@@ -524,11 +523,8 @@ abstract class EntidadeAbstrata {
         foreach ($clazz::$hasOne as $attrName => $attrInfo ) {
             $getter = self::getGetter($attrName);
             $obj = $this->$getter();
-            $objJSON = $obj->asJSON();
+            $objJSON = isset($obj)? $obj->asJSON() : 'null' ;
             $json .= ",\"$attrName\":$objJSON";
-
-
-            echo ';';
         }
 
 

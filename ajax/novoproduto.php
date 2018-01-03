@@ -17,4 +17,5 @@ $prod->setVariacao($_POST['prodvar']);
 $prod->setContainer($_POST['containerid']);
 $prod->setUsuarioCriacao($usuario);
 $prod->save();
+echo '{ "referencia": "' . $prod->getReferencia() . '"}';
 echo '';

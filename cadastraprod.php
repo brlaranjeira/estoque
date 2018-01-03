@@ -50,11 +50,13 @@ $containers = Container::getAll();
     <section>
         <form action="./ajax/novoproduto.php" method="post" id="form-novoprod">
                 <?
-                $produtos = Produto::getByAttr('container', $_GET['container']);
+                $containerId = isset($_GET['container']) ? $_GET['container'] : isset($container) ? $container->getReferencia() : '';
+                $produtos = Produto::getByAttr('container', $containerId);
                 if (empty($produtos)) {
                     ?>Nenhum produto nesta caixa/sacola<?
                 }
                 $even = true;
+                ?><div class="container-fluid"><?
                 foreach ( $produtos as $produto ) { ?>
                     <div class="row <?=$even? 'even' : ''?>">
                         <div class="col-xs-12">[<?=$produto->getReferencia()?>]</div>
@@ -65,6 +67,7 @@ $containers = Container::getAll();
                     ?></div><?
                 }
                 ?>
+                </div>
             <div class="row">
                 <div class="col-xs-12"><h4>Novo</h4></div>
             </div>

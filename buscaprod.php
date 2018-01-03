@@ -27,7 +27,7 @@ $containers = Container::getAll();
 
 ?>
 
-<div class="container-fluid">
+<div class="container">
     <div id="div-busca">
         <div class="row">
             <div class="col-xs-12">
@@ -51,6 +51,9 @@ $containers = Container::getAll();
                 </div>
             </div>
         </div>
+    </div>
+    <div id="div-resultados">
+
     </div>
 </div>
 
